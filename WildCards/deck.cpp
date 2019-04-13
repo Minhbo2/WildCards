@@ -38,17 +38,17 @@ void FDeck::CreateDeck()
 	a deck has 52 cards: 4 x 13 
 	*/
 
-	const short CARD_TYPES = 4;
-	const short CARDS_PER_TYPE = 13;
+	const int CARD_TYPES = 4;
+	const int CARDS_PER_TYPE = 13;
 
-	for (short i = 0; i < CARD_TYPES; i++)
+	for (int i = 0; i < CARD_TYPES; i++)
 	{
 		ECardType CurrentCardType = ECardType(i);
 
-		for (short j = 1; j <= CARDS_PER_TYPE; j++)
+		for (int j = 1; j <= CARDS_PER_TYPE; j++)
 		{
 			FString CardName = "";
-			short CardValue = (j > 10) ? 10 : j;
+			int CardValue = (j > 10) ? 10 : j;
 
 			if (j == 1)
 				CardName = "Ace";
@@ -117,7 +117,7 @@ FCard::FCard()
 
 
 
-FCard::FCard(short CardValue, FString CardName, ECardType CardType)
+FCard::FCard(int CardValue, FString CardName, ECardType CardType)
 {
 	this->CardValue = CardValue;
 	this->CardName = CardName;

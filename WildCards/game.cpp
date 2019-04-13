@@ -5,19 +5,34 @@ FPlayer::FPlayer()
 {
 }
 
-void FPlayer::AddToHand(FCard CardToAdd)
+void FPlayer::AddToHand(int CardIndex, FCard CardToAdd)
 {
-	Hand.emplace(CardToAdd);
+	Hand.emplace(CardIndex, CardToAdd);
 }
 
-FCard FPlayer::CardToRemove(short CardIndex)
+void FPlayer::CardToRemove(int CardIndex)
 {
-	if (CardIndex > NumCardsHold()) return FCard(); // returns empty card
+	if (CardIndex > NumCardsHold()) return; // returns empty card
 
-	return Hand.at(CardIndex);
+	auto CardToRemove = Hand.find(CardIndex);
+	Hand.erase(CardToRemove);
 }
 
 
 FPlayer::~FPlayer()
 {
+}
+
+
+
+
+/*===========================================================
+======================== GAME =============================
+===========================================================*/
+
+
+
+void FGame::ShuffleDeck()
+{
+
 }

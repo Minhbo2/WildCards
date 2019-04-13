@@ -26,11 +26,11 @@ enum class ECardType
 struct FCard
 {
 	FCard();
-	FCard(short, FString, ECardType);
+	FCard(int, FString, ECardType);
 	~FCard();
 	
 
-	short CardValue;
+	int CardValue;
 	FString CardName;
 	ECardType CardType;
 };
@@ -50,7 +50,7 @@ public:
 	FDeck();
 	~FDeck();
 
-	short GetAmountRemainded() const { return MyDeck.size(); }
+	int GetAmountRemainded() const { return MyDeck.size(); }
 	FVector<FCard> GetMyDeck() const { return MyDeck; }
 	FCard GetTopCardFromDeck();
 

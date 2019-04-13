@@ -3,28 +3,38 @@
 
 #include "pch.h"
 #include <iostream>
-#include "deck.h"
 #include "game.h"
-#include <vector>
 
+
+
+// main is only responsible for outputting and receive input the game status 
 
 
 int main()
 {
 
-	FCard Card = FCard(10, "King", ECardType::Club);
-	FCard Card2 = FCard(1, "Ace", ECardType::Heart);
-	FCard Card3 = FCard(5, "5", ECardType::Space);
-	FPlayer Player_1 = FPlayer();
-	Player_1.AddToHand(Card);
-	Player_1.AddToHand(Card2);
-	Player_1.AddToHand(Card3);
+	FGame GameManager = FGame();
 
-	short CardInHand = Player_1.NumCardsHold();
-	std::cout << CardInHand << std::endl;
+	do
+	{
+
+		// run game while no1 win 
+		/*
+			loop:
+			*shuffle
+			*deal
+			*exchange 
+			*score
+		tracking which player won: 1st to won 5 rounds
+
+		shuffle = deck reset every game
+		deal = loop through each player deal 5 cards each from deck
+		exchange = player selects up to 5 card to exchange and receive cards until has 5 in hand
+		score = add all cards value and whoever has the highest score won the round
+		*/
 
 
-
+	} while (!GameManager.IsGameWon());
 
 	return 0;
 }
