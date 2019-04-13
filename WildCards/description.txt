@@ -1,0 +1,19 @@
+Design a simulation for a card game. This game is playable by 2 or more players and 
+consists of a series of rounds until a single player is determined to be the winner. 
+Each round consists of four phases performed in order: shuffle, deal, exchange, and score.
+- *shuffle*: randomize the order of the a deck of 52 playing cards
+- *deal*: from the top of the deck, give each player 5 cards
+- *exchange*: each player, may discard as many cards (face down) as they would like. After
+they have discarded their cards, draw cards from the top of the deck until the player has 
+5 cards in their hand.
+- *score*: determine which player has the highest numerical value of cards in their hand
+(face cards are worth 10 points each). If exactly one player has the highest combined value,
+then that player is declared the winner of the round and they earn 1 point.
+
+Aside from the point scored by the winning player in a round, no other state is carried 
+over between rounds. The first player to achieve 10 points is declared the winner of the
+game. (edited) 
+There's probably a higher level of specificity that could be provided, but I think 
+writing up a one-pager, providing that to the candidate, and maybe even playing a single 
+round with a real deck to demonstrate the rules would be really valuable in overcoming 
+that mental roadblock.
