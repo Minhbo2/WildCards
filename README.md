@@ -9,6 +9,6 @@ WildCards game is a card game consists of 2 - 4 players. Players will be contest
 
 ___
 
-##Objective
+## Objective
 
 This simple project will focus mainly on practicing data structure and architecture. 
