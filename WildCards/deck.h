@@ -50,18 +50,17 @@ public:
 	FDeck();
 	~FDeck();
 
-	int GetAmountRemainded() const { return MyDeck.size(); }
+	int GetAmountRemaind() const { return MyDeck.size(); }
 	FVector<FCard> GetMyDeck() const { return MyDeck; }
 	FCard GetTopCardFromDeck();
 
 	void Reset();
+	void ShuffleDeck();
 
 
 private:
 
-	FVector<FCard> MyDeck = FVector<FCard>{5};
-
-
+	FVector<FCard> MainDeck;
+	FVector<FCard> MyDeck;
 	void CreateDeck();
-	void ShuffleDeck();
 };

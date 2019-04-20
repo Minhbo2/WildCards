@@ -7,34 +7,24 @@
 
 
 
-// main is only responsible for outputting and receive input the game status 
+// main is only responsible for running the game loop until the game is finish. 
+// game state will be handle by FGame class
 
 
 int main()
 {
 
-	FGame GameManager = FGame();
+	FGame Game = FGame();
+	FPlayer Player = FPlayer();
+	Game.ShuffleDeck();
 
-	do
-	{
-
-		// run game while no1 win 
-		/*
-			loop:
-			*shuffle
-			*deal
-			*exchange 
-			*score
-		tracking which player won: 1st to won 5 rounds
-
-		shuffle = deck reset every game
-		deal = loop through each player deal 5 cards each from deck
-		exchange = player selects up to 5 card to exchange and receive cards until has 5 in hand
-		score = add all cards value and whoever has the highest score won the round
-		*/
-
-
-	} while (!GameManager.IsGameWon());
+	Game.DealCard(Player);
+	Game.Exchange(Player);
 
 	return 0;
 }
+
+
+//TODO:
+	//cards player need to exchange
+	//score

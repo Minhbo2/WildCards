@@ -6,12 +6,44 @@
 
 
 
+
+//============================================================
+// ********************CARD STRUCT*****************************
+//============================================================
+
+FCard::FCard()
+{
+	this->CardValue = 0;
+	this->CardName = "Null";
+}
+
+
+
+FCard::FCard(int CardValue, FString CardName, ECardType CardType)
+{
+	this->CardValue = CardValue;
+	this->CardName = CardName;
+	this->CardType = CardType;
+}
+
+
+
+FCard::~FCard()
+{
+}
+
+
+
+
+
+
 //============================================================
 // ********************DECK CLASS*****************************
 //============================================================
 // Constructor
 FDeck::FDeck()
 {
+	CreateDeck();
 	Reset();
 }
 
@@ -20,7 +52,8 @@ FDeck::FDeck()
 
 void FDeck::Reset()
 {
-	CreateDeck();
+	MyDeck.clear();
+	MyDeck = MainDeck;
 	ShuffleDeck();
 }
 
@@ -62,7 +95,7 @@ void FDeck::CreateDeck()
 				CardName = std::to_string(j);
 
 			FCard Card = FCard(CardValue, CardName, CurrentCardType);
-			MyDeck.push_back(Card);
+			MainDeck.push_back(Card);
 		}
 	}
 }
@@ -100,33 +133,3 @@ FDeck::~FDeck()
 {
 
 }
-
-
-
-
-
-//============================================================
-// ********************CARD STRUCT*****************************
-//============================================================
-
-FCard::FCard()
-{
-	this->CardValue = 0;
-	this->CardName = "Null";
-}
-
-
-
-FCard::FCard(int CardValue, FString CardName, ECardType CardType)
-{
-	this->CardValue = CardValue;
-	this->CardName = CardName;
-	this->CardType = CardType;
-}
-
-
-
-FCard::~FCard()
-{
-}
-
