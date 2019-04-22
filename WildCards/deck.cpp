@@ -17,8 +17,6 @@ FCard::FCard()
 	this->CardName = "Null";
 }
 
-
-
 FCard::FCard(int CardValue, FString CardName, ECardType CardType)
 {
 	this->CardValue = CardValue;
@@ -26,15 +24,9 @@ FCard::FCard(int CardValue, FString CardName, ECardType CardType)
 	this->CardType = CardType;
 }
 
-
-
 FCard::~FCard()
 {
 }
-
-
-
-
 
 
 //============================================================
@@ -47,9 +39,6 @@ FDeck::FDeck()
 	Reset();
 }
 
-
-
-
 void FDeck::Reset()
 {
 	MyDeck.clear();
@@ -57,12 +46,6 @@ void FDeck::Reset()
 	ShuffleDeck();
 }
 
-
-
-
-
-
-// Create a standard deck of card 
 void FDeck::CreateDeck()
 {
 	/*
@@ -100,11 +83,6 @@ void FDeck::CreateDeck()
 	}
 }
 
-
-
-
-
-
 FCard FDeck::GetTopCardFromDeck()
 {
 	// a little bit cheating here. but this is more efficient compare to having using .erase(vector.front()) and reallocate memory every time. 
@@ -113,22 +91,12 @@ FCard FDeck::GetTopCardFromDeck()
 	return TopCard;
 }
 
-
-
-
-
-
 void FDeck::ShuffleDeck()
 {
 	std::srand(unsigned(std::time(0)));
 	std::random_shuffle(MyDeck.begin(), MyDeck.end());
 }
 
-
-
-
-
-// Destructor
 FDeck::~FDeck()
 {
 

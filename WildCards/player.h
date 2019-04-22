@@ -13,23 +13,25 @@ class FPlayer
 public:
 
 	FPlayer();
+	FPlayer(FString);
 	~FPlayer();
 
 
 	int GetRoundWon() const { return RoundWon; }
 	int GetNumCardsHold() const { return Hand.size(); }
-	FCard GetCard(int Index) const { return Hand.at(Index); }
 	void AddToRoundWon() { RoundWon++; }
-
+	TMap<int, FCard> GetCardsInHand() const { return Hand; }
+	void DiscardHand() { Hand.clear(); };
 
 	void AddToHand(int, FCard);
 	void CardToRemove(int);
 	bool HaveCardAt(int);
+	int TotalScore();
 
 
 private:
 
-
+	FString PlayerName;
 	int RoundWon;
 	TMap<int, FCard> Hand;
 };

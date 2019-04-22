@@ -6,6 +6,11 @@ FPlayer::FPlayer()
 {
 }
 
+FPlayer::FPlayer(FString Name)
+{
+	this->PlayerName = Name;
+}
+
 void FPlayer::AddToHand(int CardIndex, FCard CardToAdd)
 {
 	Hand.emplace(CardIndex, CardToAdd);
@@ -13,8 +18,6 @@ void FPlayer::AddToHand(int CardIndex, FCard CardToAdd)
 
 void FPlayer::CardToRemove(int CardIndex)
 {
-	if (CardIndex > GetNumCardsHold()) return;
-
 	auto CardToRemove = Hand.find(CardIndex);
 	Hand.erase(CardToRemove);
 }
@@ -26,6 +29,18 @@ bool FPlayer::HaveCardAt(int CardIndex)
 		return true;
 
 	return false;
+}
+
+int FPlayer::TotalScore()
+{
+	int TotalScoreInHand = 0;
+	for (auto It : Hand)
+	{
+		FCard Card = It.second;
+		TotalScoreInHand = TotalScoreInHand + Card.CardValue;
+	}
+
+	return TotalScoreInHand;
 }
 
 FPlayer::~FPlayer()

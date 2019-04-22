@@ -15,16 +15,12 @@ int main()
 {
 
 	FGame Game = FGame();
-	FPlayer Player = FPlayer();
-	Game.ShuffleDeck();
-
+	FPlayer Player = FPlayer("Player1");
+	
+	Game.NewRound();
 	Game.DealCard(Player);
 	Game.Exchange(Player);
+	Game.Score(Player);
 
 	return 0;
 }
-
-
-//TODO:
-	//cards player need to exchange
-	//score

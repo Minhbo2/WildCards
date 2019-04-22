@@ -26,9 +26,10 @@ public:
 
 	bool IsGameWon() const { return bGameWon; }
 	
-	void ShuffleDeck();
+	void NewRound();
 	void DealCard(FPlayer &);
 	void Exchange(FPlayer &);
+	void Score(FPlayer &);
 
 	
 		
@@ -42,4 +43,5 @@ private:
 
 	bool WantToExchange();
 	void PrintPlayerHand(FPlayer);
+	//void PrintSummary();
 };

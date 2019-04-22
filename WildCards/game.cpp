@@ -11,18 +11,16 @@ FGame::FGame()
 	MyDeck = FDeck();
 }
 
-void FGame::ShuffleDeck()
+void FGame::NewRound()
 {
-	MyDeck.ShuffleDeck();
+	MyDeck.Reset();
 }
 
 void FGame::DealCard(FPlayer & CurrentPlayer)
 {
 	const int MAX_CARD_DEAL = 5;
-	int CardsInHand = CurrentPlayer.GetNumCardsHold();
 
-
-	for (int i = CardsInHand; i < MAX_CARD_DEAL; i++)
+	for (int i = 0; i < MAX_CARD_DEAL; i++)
 	{
 		if (MyDeck.GetAmountRemaind() > 0 && !CurrentPlayer.HaveCardAt(i))
 		{
@@ -36,7 +34,6 @@ void FGame::DealCard(FPlayer & CurrentPlayer)
 
 void FGame::Exchange(FPlayer & CurrentPlayer)
 {
-	//TODO: DEBUG, doesn't print card# 5 eventhough it still in hand.
 	if (WantToExchange())
 	{
 		cout << "How many cards do you want to exchange? \n";
@@ -44,19 +41,31 @@ void FGame::Exchange(FPlayer & CurrentPlayer)
 		getline(cin, InAnswer);
 		int NumCard = stoi(InAnswer);
 		
-		for (int i = 0; i < NumCard; i++)
+		if (NumCard < 5)
 		{
-			//TODO: might b helpful to write template function to handle input from player
-			cout << "Select a card#: ";
-			string InIndex;
-			getline(cin, InIndex);
-			int CardIndex = stoi(InIndex);
-		
-			CurrentPlayer.CardToRemove(CardIndex - 1);
+			for (int i = 0; i < NumCard; i++)
+			{
+				//TODO: might b helpful to write template function to handle input from player
+				cout << "Select a card#: ";
+				string InIndex;
+				getline(cin, InIndex);
+				int CardIndex = stoi(InIndex);
+				CurrentPlayer.CardToRemove(CardIndex - 1);
+			}
 		}
-	}
+		else
+			CurrentPlayer.DiscardHand();
 
-	PrintPlayerHand(CurrentPlayer);
+		DealCard(CurrentPlayer);
+	}
+}
+
+void FGame::Score(FPlayer & CurrentPlayer)
+{
+	//TODO: get all player scores in lobby, highest score will win the round
+	cout << CurrentPlayer.TotalScore() << endl;
+
+	//if current player roundwon = 10, bgamewon = true
 }
 
 bool FGame::WantToExchange()
@@ -77,31 +86,34 @@ bool FGame::WantToExchange()
 
 void FGame::PrintPlayerHand(FPlayer CurrentPlayer)
 {
-	//system("CLS");
+	system("CLS");
 
-	int CardsHolding = CurrentPlayer.GetNumCardsHold();
-	for (int i = 0; i < CardsHolding; i++)
+	cout << "Cards in hand: \n\n";
+
+
+	TMap<int, FCard> Hand = CurrentPlayer.GetCardsInHand();
+	for (auto It = Hand.begin(); It != Hand.end(); It++)
 	{
-		if (!CurrentPlayer.HaveCardAt(i)) 
-			continue;
+		if (CurrentPlayer.HaveCardAt(It->first))
+		{
+			FCard Card = It->second;
+			std::string CardType;
+			int TypeIndex = int(Card.CardType);
 
-		FCard Card = CurrentPlayer.GetCard(i);
-		std::string CardType;
-		int TypeIndex = int(Card.CardType);
+			if (TypeIndex == 0)
+				CardType = "Space";
+			else if (TypeIndex == 1)
+				CardType = "Club";
+			else if (TypeIndex == 2)
+				CardType = "Diamond";
+			else
+				CardType = "Heart";
 
-		if (TypeIndex == 0)
-			CardType = "Space";
-		else if (TypeIndex == 1)
-			CardType = "Club";
-		else if (TypeIndex == 2)
-			CardType = "Diamond";
-		else
-			CardType = "Heart";
-
-		cout << "Card #" << i + 1 << ": \n";
-		cout << "Card Value: " << Card.CardValue << endl;
-		cout << "Card Name: " << Card.CardName << endl;
-		cout << "Card Type: " << CardType << endl << endl;
+			cout << "Card #" << It->first + 1 << ": \n";
+			cout << "Card Value: " << Card.CardValue << endl;
+			cout << "Card Name: " << Card.CardName << endl;
+			cout << "Card Type: " << CardType << endl << endl;
+		}
 	}
 }
 
