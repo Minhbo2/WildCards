@@ -22,6 +22,7 @@ public:
 	void AddToRoundWon() { RoundWon++; }
 	TMap<int, FCard> GetCardsInHand() const { return Hand; }
 	void DiscardHand() { Hand.clear(); };
+	FString GetName() const { return PlayerName; }
 
 	void AddToHand(int, FCard);
 	void CardToRemove(int);

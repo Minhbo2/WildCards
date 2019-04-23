@@ -16,20 +16,28 @@ void FGame::NewRound()
 	MyDeck.Reset();
 }
 
-void FGame::DealCard(FPlayer & CurrentPlayer)
+void FGame::DealCard()
 {
 	const int MAX_CARD_DEAL = 5;
 
-	for (int i = 0; i < MAX_CARD_DEAL; i++)
+	for (auto It : Lobby)
 	{
-		if (MyDeck.GetAmountRemaind() > 0 && !CurrentPlayer.HaveCardAt(i))
+		FPlayer & Player = It;
+		if (Player.GetNumCardsHold() < MAX_CARD_DEAL)
 		{
-			FCard Card = MyDeck.GetTopCardFromDeck();
-			CurrentPlayer.AddToHand(i, Card);
+			for (int i = 0; i < MAX_CARD_DEAL; i++)
+			{
+				if (MyDeck.GetAmountRemaind() > 0 && !Player.HaveCardAt(i))
+				{
+					FCard Card = MyDeck.GetTopCardFromDeck();
+					Player.AddToHand(i, Card);
+				}
+			}
 		}
+
+		PrintPlayerHand(Player);
 	}
 
-	PrintPlayerHand(CurrentPlayer);
 }
 
 void FGame::Exchange(FPlayer & CurrentPlayer)
@@ -56,16 +64,30 @@ void FGame::Exchange(FPlayer & CurrentPlayer)
 		else
 			CurrentPlayer.DiscardHand();
 
-		DealCard(CurrentPlayer);
+		DealCard();
 	}
 }
 
-void FGame::Score(FPlayer & CurrentPlayer)
+void FGame::Score()
 {
-	//TODO: get all player scores in lobby, highest score will win the round
-	cout << CurrentPlayer.TotalScore() << endl;
-
-	//if current player roundwon = 10, bgamewon = true
+	int HighestScore = 0;
+	FPlayer * HighestScorePlayer = &Lobby.at(0); //unable to declare type ref since it is unable to init;
+	for (auto It = Lobby.begin(); It != Lobby.end(); It++)
+	{
+		FPlayer & CurrentPlayer = *It;
+		int PlayerScore = CurrentPlayer.TotalScore();
+		if (CurrentPlayer.TotalScore() > HighestScore)
+		{
+			HighestScore = CurrentPlayer.TotalScore();
+			HighestScorePlayer = &CurrentPlayer;
+		}
+	}
+	//TODO: debug, game does not compare scores of player, player1 always wins.
+	//TODO: find out whether the player from *it roundwon has change
+	// might bug and only roundwon from the copy *it player altered 
+	// if so Highestscoreplayer will be to a type of pointer/reference instead
+	HighestScorePlayer->AddToRoundWon();
+	PrintRoundSummary(*HighestScorePlayer);
 }
 
 bool FGame::WantToExchange()
@@ -86,7 +108,7 @@ bool FGame::WantToExchange()
 
 void FGame::PrintPlayerHand(FPlayer CurrentPlayer)
 {
-	system("CLS");
+	//system("CLS");
 
 	cout << "Cards in hand: \n\n";
 
@@ -115,6 +137,16 @@ void FGame::PrintPlayerHand(FPlayer CurrentPlayer)
 			cout << "Card Type: " << CardType << endl << endl;
 		}
 	}
+}
+
+void FGame::PrintRoundSummary(FPlayer CurrentPlayer)
+{
+	cout << CurrentPlayer.GetName() << " won! \n";
+}
+
+void FGame::AddToLobby(FPlayer PlayerToAdd)
+{
+	Lobby.push_back(PlayerToAdd);
 }
 
 FGame::~FGame()

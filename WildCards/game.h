@@ -13,7 +13,6 @@
 #include "player.h"
 
 
-
 class FGame
 {
 
@@ -27,10 +26,10 @@ public:
 	bool IsGameWon() const { return bGameWon; }
 	
 	void NewRound();
-	void DealCard(FPlayer &);
+	void DealCard();
 	void Exchange(FPlayer &);
-	void Score(FPlayer &);
-
+	void Score();
+	void AddToLobby(FPlayer);
 	
 		
 
@@ -38,10 +37,11 @@ public:
 private:
 
 	FDeck MyDeck;
+	FVector<FPlayer> Lobby;
 
 	bool bGameWon;
 
 	bool WantToExchange();
 	void PrintPlayerHand(FPlayer);
-	//void PrintSummary();
+	void PrintRoundSummary(FPlayer);
 };

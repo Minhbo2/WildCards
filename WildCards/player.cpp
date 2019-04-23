@@ -34,7 +34,7 @@ bool FPlayer::HaveCardAt(int CardIndex)
 int FPlayer::TotalScore()
 {
 	int TotalScoreInHand = 0;
-	for (auto It : Hand)
+	for (auto & It : Hand)
 	{
 		FCard Card = It.second;
 		TotalScoreInHand = TotalScoreInHand + Card.CardValue;

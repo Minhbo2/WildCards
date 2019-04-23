@@ -16,11 +16,14 @@ int main()
 
 	FGame Game = FGame();
 	FPlayer Player = FPlayer("Player1");
+	FPlayer Player1 = FPlayer("Player2");
+	Game.AddToLobby(Player);
+	Game.AddToLobby(Player1);
 	
 	Game.NewRound();
-	Game.DealCard(Player);
+	Game.DealCard();
 	Game.Exchange(Player);
-	Game.Score(Player);
+	Game.Score();
 
 	return 0;
 }
