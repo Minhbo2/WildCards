@@ -26,7 +26,7 @@ public:
 	bool IsGameWon() const { return bGameWon; }
 	
 	void NewRound();
-	void DealCard();
+	void DealCard(FPlayer &);
 	void Exchange(FPlayer &);
 	void Score();
 	void AddToLobby(FPlayer);

@@ -16,28 +16,21 @@ void FGame::NewRound()
 	MyDeck.Reset();
 }
 
-void FGame::DealCard()
+void FGame::DealCard(FPlayer & CurrentPlayer)
 {
 	const int MAX_CARD_DEAL = 5;
+	int CardsInHand = CurrentPlayer.GetNumCardsHold();
 
-	for (auto It : Lobby)
+	for (int i = 0; i < MAX_CARD_DEAL; i++)
 	{
-		FPlayer & Player = It;
-		if (Player.GetNumCardsHold() < MAX_CARD_DEAL)
+		if (MyDeck.GetAmountRemaind() > 0 && !CurrentPlayer.HaveCardAt(i))
 		{
-			for (int i = 0; i < MAX_CARD_DEAL; i++)
-			{
-				if (MyDeck.GetAmountRemaind() > 0 && !Player.HaveCardAt(i))
-				{
-					FCard Card = MyDeck.GetTopCardFromDeck();
-					Player.AddToHand(i, Card);
-				}
-			}
+			FCard Card = MyDeck.GetTopCardFromDeck();
+			CurrentPlayer.AddToHand(i, Card);
 		}
-
-		PrintPlayerHand(Player);
 	}
 
+	PrintPlayerHand(CurrentPlayer);
 }
 
 void FGame::Exchange(FPlayer & CurrentPlayer)
@@ -64,7 +57,7 @@ void FGame::Exchange(FPlayer & CurrentPlayer)
 		else
 			CurrentPlayer.DiscardHand();
 
-		DealCard();
+		DealCard(CurrentPlayer);
 	}
 }
 
@@ -108,7 +101,7 @@ bool FGame::WantToExchange()
 
 void FGame::PrintPlayerHand(FPlayer CurrentPlayer)
 {
-	//system("CLS");
+	system("CLS");
 
 	cout << "Cards in hand: \n\n";
 

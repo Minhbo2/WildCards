@@ -42,8 +42,7 @@ FDeck::FDeck()
 void FDeck::Reset()
 {
 	MyDeck.clear();
-	MyDeck = MainDeck;
-	ShuffleDeck();
+	MyDeck = GetShuffleDeck();
 }
 
 void FDeck::CreateDeck()
@@ -85,16 +84,19 @@ void FDeck::CreateDeck()
 
 FCard FDeck::GetTopCardFromDeck()
 {
-	// a little bit cheating here. but this is more efficient compare to having using .erase(vector.front()) and reallocate memory every time. 
-	FCard TopCard = GetMyDeck().back();
-	MyDeck.pop_back();
+	FCard TopCard = MyDeck.front();
+	MyDeck.pop_front();
 	return TopCard;
 }
 
-void FDeck::ShuffleDeck()
+FList<FCard> FDeck::GetShuffleDeck()
 {
+	// since order of cards are not important and list is more efficient when performing insertion and deletion. 
 	std::srand(unsigned(std::time(0)));
-	std::random_shuffle(MyDeck.begin(), MyDeck.end());
+	FVector<FCard> TempDeck = MainDeck;
+	std::random_shuffle(TempDeck.begin(), TempDeck.end());
+	FList<FCard> ShuffleDeck {TempDeck.begin(), TempDeck.end()};
+	return ShuffleDeck;
 }
 
 FDeck::~FDeck()
