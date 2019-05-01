@@ -18,14 +18,18 @@ int main()
 {
 
 	FGame Game = FGame();
-	FPlayer Player = FPlayer("Player1");
-	FPlayer Player1 = FPlayer("Player2");
-	Game.AddToLobby(Player);
+	FPlayer Player1 = FPlayer("Player 1");
+	FPlayer Player2 = FPlayer("Player 2");
+	FPlayer Player3 = FPlayer("Player 3");
+	FPlayer Player4 = FPlayer("Player 4");
 	Game.AddToLobby(Player1);
-	
-	Game.NewRound();
-	Game.DealCard(Player);
-	Game.Exchange(Player);
+	Game.AddToLobby(Player2);
+	Game.AddToLobby(Player3);
+	Game.AddToLobby(Player4);
+
+	Game.DealToAll();
+	Game.Score();
+	//TODO: create a method that will loop through each player each round and deal cards, exchange and score
 
 	return 0;
 }
@@ -46,4 +50,7 @@ something to consider: what happen if multiple players have the same score? One 
 
 main.cpp will handle intro and tracking players in lobby
 ask for how many people will be playing. each player will take turns to insert name, main will add player to FGame lobby.
+
+
+need to add a lobby class to manage each players that is in lobby instead of having game class handles everything
 */

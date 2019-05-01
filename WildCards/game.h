@@ -23,24 +23,24 @@ public:
 	~FGame();
 
 
+	int PlayersInLobby() const { return Lobby.size(); }
 	bool IsGameWon() const { return bGameWon; }
 	
 	void NewRound();
-	void DealCard(FPlayer &);
 	void Exchange(FPlayer &);
 	void Score();
 	void AddToLobby(FPlayer);
-	
+	void DealToAll();
 		
 
 
 private:
 
-	FDeck MyDeck;
-	FVector<FPlayer> Lobby;
-
 	bool bGameWon;
+	FDeck MyDeck;
+	FList<FPlayer> Lobby;
 
+	void DealCards(FPlayer &);
 	bool WantToExchange();
 	void PrintPlayerHand(FPlayer);
 	void PrintRoundSummary(FPlayer);

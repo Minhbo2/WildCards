@@ -16,11 +16,10 @@ void FGame::NewRound()
 	MyDeck.Reset();
 }
 
-void FGame::DealCard(FPlayer & CurrentPlayer)
+void FGame::DealCards(FPlayer & CurrentPlayer)
 {
 	const int MAX_CARD_DEAL = 5;
 	int CardsInHand = CurrentPlayer.GetNumCardsHold();
-
 	for (int i = 0; i < MAX_CARD_DEAL; i++)
 	{
 		if (MyDeck.GetAmountRemaind() > 0 && !CurrentPlayer.HaveCardAt(i))
@@ -29,7 +28,6 @@ void FGame::DealCard(FPlayer & CurrentPlayer)
 			CurrentPlayer.AddToHand(i, Card);
 		}
 	}
-
 	PrintPlayerHand(CurrentPlayer);
 }
 
@@ -57,28 +55,32 @@ void FGame::Exchange(FPlayer & CurrentPlayer)
 		else
 			CurrentPlayer.DiscardHand();
 
-		DealCard(CurrentPlayer);
+		DealCards(CurrentPlayer);
 	}
 }
 
 void FGame::Score()
 {
+	//TODO: refactoring score system
+	/*
+	game will have a global var highest score
+	score will get total score from each player
+	the next highest will be set as the highest score player
+	this way game will not have to deal with lobby at all
+	*/
 	int HighestScore = 0;
-	FPlayer * HighestScorePlayer = &Lobby.at(0); //unable to declare type ref since it is unable to init;
+	FPlayer * HighestScorePlayer = nullptr; //unable to declare type ref since it is unable to init;
 	for (auto It = Lobby.begin(); It != Lobby.end(); It++)
 	{
 		FPlayer & CurrentPlayer = *It;
-		int PlayerScore = CurrentPlayer.TotalScore();
 		if (CurrentPlayer.TotalScore() > HighestScore)
 		{
 			HighestScore = CurrentPlayer.TotalScore();
 			HighestScorePlayer = &CurrentPlayer;
 		}
 	}
-	//TODO: debug, game does not compare scores of player, player1 always wins.
-	//TODO: find out whether the player from *it roundwon has change
-	// might bug and only roundwon from the copy *it player altered 
-	// if so Highestscoreplayer will be to a type of pointer/reference instead
+
+	//TODO check if a player has 10 rounds won
 	HighestScorePlayer->AddToRoundWon();
 	PrintRoundSummary(*HighestScorePlayer);
 }
@@ -101,9 +103,9 @@ bool FGame::WantToExchange()
 
 void FGame::PrintPlayerHand(FPlayer CurrentPlayer)
 {
-	system("CLS");
+	//system("CLS");
 
-	cout << "Cards in hand: \n\n";
+	cout << CurrentPlayer.GetName() << " cards: \n\n";
 
 
 	TMap<int, FCard> Hand = CurrentPlayer.GetCardsInHand();
@@ -140,6 +142,18 @@ void FGame::PrintRoundSummary(FPlayer CurrentPlayer)
 void FGame::AddToLobby(FPlayer PlayerToAdd)
 {
 	Lobby.push_back(PlayerToAdd);
+}
+
+void FGame::DealToAll()
+{
+	if (Lobby.size() > 1)
+	{
+		for (auto It = Lobby.begin(); It != Lobby.end(); It++)
+		{
+			FPlayer & CurrentPlayer = *It;
+			DealCards(CurrentPlayer);
+		}
+	}
 }
 
 FGame::~FGame()
