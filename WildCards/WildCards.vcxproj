@@ -153,12 +153,15 @@
   <ItemGroup>
     <ClInclude Include="deck.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="lobby.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="wildcards.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="deck.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="lobby.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -167,6 +170,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="wildcards.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="description.txt" />
