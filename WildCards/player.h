@@ -27,7 +27,7 @@ public:
 	void AddToHand(int, FCard);
 	void CardToRemove(int);
 	bool HaveCardAt(int);
-	int TotalScore();
+	int GetTotalScore();
 
 
 private:

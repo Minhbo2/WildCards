@@ -31,7 +31,7 @@ bool FPlayer::HaveCardAt(int CardIndex)
 	return false;
 }
 
-int FPlayer::TotalScore()
+int FPlayer::GetTotalScore()
 {
 	int TotalScoreInHand = 0;
 	for (auto & It : Hand)

@@ -8,6 +8,8 @@
 
 using namespace std;
 
+
+
 class FWildCards
 {
 public:
@@ -18,18 +20,15 @@ public:
 
 	void NewRound();
 	void Exchange(FPlayer &);
-	void Score(FList<FPlayer> &);
-	void DealToAll(FList<FPlayer> &);
+	void DealCards(FPlayer &);
 
 private:
 
 	bool bGameWon;
 	FDeck MyDeck;
 
-	FPlayer Leader;
-
-	void DealCards(FPlayer &);
 	bool WantToExchange();
+	bool HasHigherScore(FPlayer);
 	void PrintPlayerHand(FPlayer);
 	void PrintRoundSummary(FPlayer);
 };

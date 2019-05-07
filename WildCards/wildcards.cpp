@@ -17,8 +17,8 @@ void FWildCards::Exchange(FPlayer & CurrentPlayer)
 	if (WantToExchange())
 	{
 		cout << "How many cards do you want to exchange? \n";
-		string InAnswer;
-		getline(cin, InAnswer);
+		FString InAnswer;
+		cin >> InAnswer;
 		int NumCard = stoi(InAnswer);
 
 		if (NumCard < 5)
@@ -27,8 +27,8 @@ void FWildCards::Exchange(FPlayer & CurrentPlayer)
 			{
 				//TODO: might b helpful to write template function to handle input from player
 				cout << "Select a card#: ";
-				string InIndex;
-				getline(cin, InIndex);
+				FString InIndex;
+				cin >> InIndex;
 				int CardIndex = stoi(InIndex);
 				CurrentPlayer.CardToRemove(CardIndex - 1);
 			}
@@ -40,39 +40,9 @@ void FWildCards::Exchange(FPlayer & CurrentPlayer)
 	}
 }
 
-void FWildCards::Score(FList<FPlayer> & Players)
+bool FWildCards::HasHigherScore(FPlayer CurrentPlayer)
 {
-	
-	// get all the scores from each player, compare and whoever has the highest score will win the round. 
-	int HighestScore = 0;
-	FPlayer * HighestScorePlayer = nullptr;
-	for (auto It = Players.begin(); It != Players.end(); It++)
-	{
-		FPlayer & CurrentPlayer = *It;
-		if (CurrentPlayer.TotalScore() > HighestScore)
-		{
-			HighestScore = CurrentPlayer.TotalScore();
-			HighestScorePlayer = &CurrentPlayer;
-		}
-	}
-
-
-	//TODO check if a player has 10 rounds won
-	HighestScorePlayer->AddToRoundWon();
-	bGameWon = (HighestScorePlayer->GetRoundWon() >= 10) ? true : false;
-	PrintRoundSummary(*HighestScorePlayer);
-}
-
-void FWildCards::DealToAll(FList<FPlayer> & Lobby)
-{
-	if (Lobby.size() > 1)
-	{
-		for (auto It = Lobby.begin(); It != Lobby.end(); It++)
-		{
-			FPlayer & CurrentPlayer = *It;
-			DealCards(CurrentPlayer);
-		}
-	}
+	return false;
 }
 
 void FWildCards::DealCards(FPlayer & CurrentPlayer)
@@ -96,7 +66,8 @@ bool FWildCards::WantToExchange()
 	cout << "Y/y or N/n \n\n";
 
 	string InAnswer;
-	getline(cin, InAnswer);
+	// if use getline() will make console skips first answer
+	cin >> InAnswer;
 	cout << endl;
 
 	char Answer = tolower(InAnswer[0]);
@@ -108,7 +79,7 @@ bool FWildCards::WantToExchange()
 
 void FWildCards::PrintPlayerHand(FPlayer CurrentPlayer)
 {
-	//system("CLS");
+	system("CLS");
 
 	cout << CurrentPlayer.GetName() << " cards: \n\n";
 

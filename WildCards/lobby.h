@@ -2,6 +2,9 @@
 
 #include "pch.h"
 #include "player.h"
+#include <iostream>
+
+using namespace std;
 
 
 class FLobby
@@ -14,7 +17,7 @@ public:
 
 	FList<FPlayer> GetLobby() const { return Lobby; }
 
-	void AddToLobby(FPlayer);
+	void CreateLobby(int);
 
 private:
 

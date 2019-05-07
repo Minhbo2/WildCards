@@ -2,12 +2,17 @@
 //
 
 #include "pch.h"
+#include "game.h"
 
 
 
 
 int main()
 {
+
+	FGame Game = FGame();
+	while(true)
+		Game.RunGame();
 
 	return 0;
 }
