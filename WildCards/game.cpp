@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "game.h"
+#include <conio.h>
 
 FGame::FGame()
 {
@@ -7,7 +8,7 @@ FGame::FGame()
 	WildCards = FWildCards();
 
 	GameState = EGameState::Init;
-	RoundState = ERoundState::End_Round;
+	RoundState = ERoundState::Reset;
 }
 
 void FGame::RunGame()
@@ -16,10 +17,11 @@ void FGame::RunGame()
 	{
 		case EGameState::Lobby:
 			InitLobby();
+			// make sure lobby is unchange unless game is over. otherwise will get bad memory alloc
+			Players = Lobby.GetLobby();
 			GameState = EGameState::Run;
 			break;
 		case EGameState::Run:
-			Players = Lobby.GetLobby();
 			StartRound();
 			//only if there is a winner then Gamestate = summary
 			break;
@@ -54,25 +56,33 @@ void FGame::StartRound()
 		case ERoundState::Exchange:
 			
 			WildCards.Exchange(CurrentPlayer);
+			if (Leader)
+			{
+				cout << CurrentPlayer.GetTotalScore() << endl;
+				cout << Leader->GetTotalScore() << endl;
+			}
 			RoundState = ERoundState::Score;
 			break;
 		case ERoundState::Score:
-			if (Leader == nullptr || Leader->GetTotalScore() > CurrentPlayer.GetTotalScore())
+			if (Leader == nullptr || Leader->GetTotalScore() < CurrentPlayer.GetTotalScore())
 				Leader = &CurrentPlayer;
 
-			RoundState = (It == --Players.end()) ? ERoundState::End_Round : ERoundState::Deal;
-
-			if (RoundState == ERoundState::End_Round)
-				cout << Leader->GetName();
+			RoundState = (It == --Players.end()) ? ERoundState::Reset : ERoundState::Deal;
 			It++;
 			break;
 		default:
-			//TODO: Debug leader pointer = bad memory alloc
+			//TODO: Bugs
+			// Deck is not updating, previous player will always win
 			if (Leader)
 			{
-				cout << Leader->GetName() << " won this round!" << endl;
+				system("CLS");
 				Leader->AddToRoundWon();
+				cout << Leader->GetName() << " won this round!" << endl;
+				cout <<  "Total point: " << Leader->GetRoundWon() << endl;
 				//check to see if leader has won the game
+				cout << "Please hit Enter to continue:";
+				char Key;
+				Key = _getch();
 			}
 
 			Leader     = nullptr;

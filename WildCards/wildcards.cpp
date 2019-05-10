@@ -40,11 +40,6 @@ void FWildCards::Exchange(FPlayer & CurrentPlayer)
 	}
 }
 
-bool FWildCards::HasHigherScore(FPlayer CurrentPlayer)
-{
-	return false;
-}
-
 void FWildCards::DealCards(FPlayer & CurrentPlayer)
 {
 	const int MAX_CARD_DEAL = 5;

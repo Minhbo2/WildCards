@@ -19,7 +19,7 @@ enum class ERoundState
 	Deal,
 	Exchange,
 	Score,
-	End_Round
+	Reset
 };
 
 
@@ -28,7 +28,7 @@ class FGame
 {
 public:
 	FGame();
-
+	
 	void RunGame();
 
 private:

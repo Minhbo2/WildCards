@@ -28,7 +28,6 @@ private:
 	FDeck MyDeck;
 
 	bool WantToExchange();
-	bool HasHigherScore(FPlayer);
 	void PrintPlayerHand(FPlayer);
 	void PrintRoundSummary(FPlayer);
 };

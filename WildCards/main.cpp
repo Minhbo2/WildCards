@@ -9,11 +9,10 @@
 
 int main()
 {
-
 	FGame Game = FGame();
 	while(true)
 		Game.RunGame();
-
+	
 	return 0;
 }
 
