@@ -16,20 +16,30 @@ void FGame::RunGame()
 	switch (GameState)
 	{
 		case EGameState::Lobby:
+			
 			InitLobby();
 			// make sure lobby is unchange unless game is over. otherwise will get bad memory alloc
 			Players = Lobby.GetLobby();
 			GameState = EGameState::Run;
+			
 			break;
 		case EGameState::Run:
+			
 			StartRound();
 			//only if there is a winner then Gamestate = summary
+			if (IsGameWon())
+				GameState = EGameState::Summary;
+
 			break;
 		case EGameState::Summary:
+			// print who has won the game.
 			break;
 		default:
+			
 			PrintIntro();
+			bGameWon = false;
 			GameState = EGameState::Lobby;
+			
 			break;
 	}
 }
@@ -43,50 +53,58 @@ void FGame::StartRound()
 		switch (RoundState)
 		{
 		case ERoundState::Shuffle:
-			if (Leader == nullptr)
-				WildCards.NewRound();
-
+			
+			WildCards.NewRound();
 			RoundState = ERoundState::Deal;
+
 			break;
 		case ERoundState::Deal:
+			
+			CurrentPlayer.DiscardHand();
 			WildCards.DealCards(CurrentPlayer);
-
 			RoundState = ERoundState::Exchange;
+
 			break;
 		case ERoundState::Exchange:
-			
+
 			WildCards.Exchange(CurrentPlayer);
-			if (Leader)
-			{
-				cout << CurrentPlayer.GetTotalScore() << endl;
-				cout << Leader->GetTotalScore() << endl;
-			}
 			RoundState = ERoundState::Score;
+
 			break;
 		case ERoundState::Score:
+			
 			if (Leader == nullptr || Leader->GetTotalScore() < CurrentPlayer.GetTotalScore())
 				Leader = &CurrentPlayer;
 
 			RoundState = (It == --Players.end()) ? ERoundState::Reset : ERoundState::Deal;
 			It++;
+			
 			break;
 		default:
-			//TODO: Bugs
-			// Deck is not updating, previous player will always win
-			if (Leader)
+			
+			if(Leader)
 			{
 				system("CLS");
 				Leader->AddToRoundWon();
-				cout << Leader->GetName() << " won this round!" << endl;
-				cout <<  "Total point: " << Leader->GetRoundWon() << endl;
-				//check to see if leader has won the game
+				
+				if (Leader->GetRoundWon() >= 5)
+				{
+					cout << Leader->GetName() << " won the game!" << endl;
+					bGameWon = true;
+				}
+				else
+				{
+					cout << Leader->GetName() << " won this round!" << endl;
+					cout << "Total point: " << Leader->GetRoundWon() << endl;
+				}
+				
 				cout << "Please hit Enter to continue:";
 				char Key;
 				Key = _getch();
 			}
-
 			Leader     = nullptr;
 			RoundState = ERoundState::Shuffle;
+			
 			break;
 		}
 	}

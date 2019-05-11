@@ -16,15 +16,12 @@ public:
 	FWildCards();
 	~FWildCards();
 
-	bool IsGameWon() const { return bGameWon; }
-
 	void NewRound();
 	void Exchange(FPlayer &);
 	void DealCards(FPlayer &);
 
 private:
 
-	bool bGameWon;
 	FDeck MyDeck;
 
 	bool WantToExchange();

@@ -29,6 +29,8 @@ class FGame
 public:
 	FGame();
 	
+	bool IsGameWon() { return bGameWon; }
+
 	void RunGame();
 
 private:
@@ -39,6 +41,7 @@ private:
 	FLobby Lobby;
 	FWildCards WildCards;
 	FList<FPlayer> Players;
+	bool bGameWon;
 
 	void PrintIntro();
 	void InitLobby();

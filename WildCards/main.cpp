@@ -10,8 +10,11 @@
 int main()
 {
 	FGame Game = FGame();
-	while(true)
+	do
+	{
 		Game.RunGame();
+		// ask to play again
+	} while (!Game.IsGameWon());
 	
 	return 0;
 }
