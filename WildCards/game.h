@@ -28,8 +28,6 @@ class FGame
 {
 public:
 	FGame();
-	
-	bool IsGameWon() { return bGameWon; }
 
 	void RunGame();
 

@@ -16,16 +16,12 @@ void FWildCards::Exchange(FPlayer & CurrentPlayer)
 {
 	if (WantToExchange())
 	{
-		cout << "How many cards do you want to exchange? \n";
-		FString InAnswer;
-		cin >> InAnswer;
-		int NumCard = stoi(InAnswer);
-
+		FString AskCardAmount = "How many cards do you want to exchange?";
+		int NumCard = GetUserInput<int>(AskCardAmount);
 		if (NumCard < 5)
 		{
 			for (int i = 0; i < NumCard; i++)
 			{
-				//TODO: might b helpful to write template function to handle input from player
 				cout << "Select a card#: ";
 				FString InIndex;
 				cin >> InIndex;
@@ -57,15 +53,8 @@ void FWildCards::DealCards(FPlayer & CurrentPlayer)
 
 bool FWildCards::WantToExchange()
 {
-	cout << "Do you want to exchange cards? ";
-	cout << "Y/y or N/n \n\n";
-
-	string InAnswer;
-	// if use getline() will make console skips first answer
-	cin >> InAnswer;
-	cout << endl;
-
-	char Answer = tolower(InAnswer[0]);
+	FString AskToExchange = "Do you want to exchange cards? Y/y or N/n: ";
+	char Answer = tolower(GetUserInput<char>(AskToExchange));
 	if (Answer == 'y')
 		return true;
 

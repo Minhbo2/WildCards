@@ -28,3 +28,20 @@ private:
 	void PrintPlayerHand(FPlayer);
 	void PrintRoundSummary(FPlayer);
 };
+
+// get return from user input
+template<typename T >
+T GetUserInput(FString OutString)
+{
+	T ReturnInput;
+	cout << OutString << endl;
+	cin >> ReturnInput;
+	return ReturnInput;
+};
+
+// checking for correct input
+template<class T, class J>
+bool IsCorrectInput(T InputType, J ExpectType)
+{
+	return (typeid(InputType) == typeid(ExpectType));
+};

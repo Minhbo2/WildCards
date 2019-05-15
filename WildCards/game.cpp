@@ -13,21 +13,23 @@ FGame::FGame()
 
 void FGame::RunGame()
 {
-	switch (GameState)
+	while (!bGameWon)
 	{
+		switch (GameState)
+		{
 		case EGameState::Lobby:
-			
+
 			InitLobby();
 			// make sure lobby is unchange unless game is over. otherwise will get bad memory alloc
 			Players = Lobby.GetLobby();
 			GameState = EGameState::Run;
-			
+
 			break;
 		case EGameState::Run:
-			
+
 			StartRound();
 			//only if there is a winner then Gamestate = summary
-			if (IsGameWon())
+			if (bGameWon)
 				GameState = EGameState::Summary;
 
 			break;
@@ -35,12 +37,13 @@ void FGame::RunGame()
 			// print who has won the game.
 			break;
 		default:
-			
+
 			PrintIntro();
 			bGameWon = false;
 			GameState = EGameState::Lobby;
-			
+
 			break;
+		}
 	}
 }
 
