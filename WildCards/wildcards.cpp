@@ -22,10 +22,8 @@ void FWildCards::Exchange(FPlayer & CurrentPlayer)
 		{
 			for (int i = 0; i < NumCard; i++)
 			{
-				cout << "Select a card#: ";
-				FString InIndex;
-				cin >> InIndex;
-				int CardIndex = stoi(InIndex);
+				FString AskToSelect = "Select a card#: ";
+				int CardIndex = GetUserInput<int>(AskToSelect);
 				CurrentPlayer.CardToRemove(CardIndex - 1);
 			}
 		}
@@ -54,11 +52,8 @@ void FWildCards::DealCards(FPlayer & CurrentPlayer)
 bool FWildCards::WantToExchange()
 {
 	FString AskToExchange = "Do you want to exchange cards? Y/y or N/n: ";
-	char Answer = tolower(GetUserInput<char>(AskToExchange));
-	if (Answer == 'y')
-		return true;
-
-	return false;
+	char Answer = GetUserInput<char>(AskToExchange);
+	return (tolower(Answer) == 'y') ? true : false;
 }
 
 void FWildCards::PrintPlayerHand(FPlayer CurrentPlayer)
@@ -92,12 +87,6 @@ void FWildCards::PrintPlayerHand(FPlayer CurrentPlayer)
 			cout << "Card Type: " << CardType << endl << endl;
 		}
 	}
-}
-
-void FWildCards::PrintRoundSummary(FPlayer CurrentPlayer)
-{
-	cout << CurrentPlayer.GetName() << " won this round! \n";
-	cout << "Total Score: " << CurrentPlayer.GetRoundWon() << endl;
 }
 
 FWildCards::~FWildCards()

@@ -9,6 +9,30 @@
 using namespace std;
 
 
+//Global static helper function: get correct user input
+template<class T >
+static T GetUserInput(FString OutString)
+{
+	T UserInput;
+	bool bValid = false;
+	while (!bValid)
+	{
+		cout << OutString << endl;
+		cin >> UserInput;
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			auto TypeName = typeid(UserInput).name();
+			cout << "Please enter correct input of " << TypeName << endl;
+		}
+		else
+			bValid = true;
+	}
+	return UserInput;
+};
+
+
 
 class FWildCards
 {
@@ -26,22 +50,4 @@ private:
 
 	bool WantToExchange();
 	void PrintPlayerHand(FPlayer);
-	void PrintRoundSummary(FPlayer);
-};
-
-// get return from user input
-template<typename T >
-T GetUserInput(FString OutString)
-{
-	T ReturnInput;
-	cout << OutString << endl;
-	cin >> ReturnInput;
-	return ReturnInput;
-};
-
-// checking for correct input
-template<class T, class J>
-bool IsCorrectInput(T InputType, J ExpectType)
-{
-	return (typeid(InputType) == typeid(ExpectType));
 };

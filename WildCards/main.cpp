@@ -6,15 +6,11 @@
 
 
 
+
 int main()
 {
 	FGame Game = FGame();
-	bool bPlayAgain = false;
-	do
-	{
-		Game.RunGame();
-		// ask to play again
-	} while (!bPlayAgain);
+	Game.RunGame();
 	
 	return 0;
 }

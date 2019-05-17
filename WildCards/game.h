@@ -44,4 +44,5 @@ private:
 	void PrintIntro();
 	void InitLobby();
 	void StartRound();
+	bool AskPlayAgain();
 };

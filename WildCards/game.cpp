@@ -13,38 +13,46 @@ FGame::FGame()
 
 void FGame::RunGame()
 {
-	while (!bGameWon)
+	bool bPlayAgain = false;
+	do 
 	{
-		switch (GameState)
+		while (!bGameWon)
 		{
-		case EGameState::Lobby:
+			switch (GameState)
+			{
+			case EGameState::Lobby:
 
-			InitLobby();
-			// make sure lobby is unchange unless game is over. otherwise will get bad memory alloc
-			Players = Lobby.GetLobby();
-			GameState = EGameState::Run;
+				InitLobby();
+				// make sure lobby is unchange unless game is over. otherwise will get bad memory alloc
+				Players = Lobby.GetLobby();
+				GameState = EGameState::Run;
 
-			break;
-		case EGameState::Run:
+				break;
+			case EGameState::Run:
 
-			StartRound();
-			//only if there is a winner then Gamestate = summary
-			if (bGameWon)
-				GameState = EGameState::Summary;
+				//only if there is a winner then Gamestate = summary
+				if (bGameWon)
+					GameState = EGameState::Summary;
+				else
+					StartRound();
 
-			break;
-		case EGameState::Summary:
-			// print who has won the game.
-			break;
-		default:
+				break;
+			case EGameState::Summary:
 
-			PrintIntro();
-			bGameWon = false;
-			GameState = EGameState::Lobby;
+				bPlayAgain = AskPlayAgain();
+				GameState = EGameState::Lobby;
 
-			break;
+				break;
+			default:
+
+				PrintIntro();
+				bGameWon = false;
+				GameState = EGameState::Lobby;
+
+				break;
+			}
 		}
-	}
+	} while (bPlayAgain);
 }
 
 void FGame::StartRound()
@@ -85,12 +93,14 @@ void FGame::StartRound()
 			break;
 		default:
 			
+			constexpr int MAX_ROUND = 5;
+
 			if(Leader)
 			{
 				system("CLS");
 				Leader->AddToRoundWon();
 				
-				if (Leader->GetRoundWon() >= 5)
+				if (Leader->GetRoundWon() >= MAX_ROUND)
 				{
 					cout << Leader->GetName() << " won the game!" << endl;
 					bGameWon = true;
@@ -107,10 +117,17 @@ void FGame::StartRound()
 			}
 			Leader     = nullptr;
 			RoundState = ERoundState::Shuffle;
-			
+
 			break;
 		}
 	}
+}
+
+bool FGame::AskPlayAgain()
+{
+	FString PlayAgain = "Would you like to play again?";
+	char InputChar = GetUserInput<char>(PlayAgain);
+	return (tolower(InputChar) == 'y');
 }
 
 void FGame::PrintIntro()
@@ -125,9 +142,7 @@ void FGame::PrintIntro()
 
 void FGame::InitLobby()
 {
-	cout << "Enter 2 - 4 for number of players: ";
-	int NumPlayers;
-	cin >> NumPlayers;
-
+	FString EnterLobby =  "Enter 2 - 4 for number of players: ";
+	int NumPlayers = GetUserInput<int>(EnterLobby);
 	Lobby.CreateLobby(NumPlayers);
 }
