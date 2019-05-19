@@ -37,7 +37,7 @@ private:
 
 	//Why map?:
 	/*
-	limitation of simple array, unable to delete an element
+	limitation of simple array: unable to delete an element
 	order is important, list is out of the question
 	vetor will require memory allocation everytime performing insertion and deletion
 	that leaves only map

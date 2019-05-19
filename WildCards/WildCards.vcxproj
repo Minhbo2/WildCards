@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="deck.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gihf.h" />
     <ClInclude Include="lobby.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="player.h" />

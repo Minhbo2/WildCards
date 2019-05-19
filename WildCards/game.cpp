@@ -4,59 +4,37 @@
 
 FGame::FGame()
 {
-	Lobby = FLobby();
-	WildCards = FWildCards();
-
-	GameState = EGameState::Init;
-	RoundState = ERoundState::Reset;
+	Lobby      = FLobby();
+	WildCards  = FWildCards();
 }
 
-void FGame::RunGame()
+void FGame::Run()
 {
-	bool bPlayAgain = false;
+	bool bPlayAgain;
 	do 
 	{
+		//reset/intro
+		bGameWon   = false;
+		bPlayAgain = false;
+		PrintIntro();
+
+		// setup game lobby
+		InitLobby();
+		Players = Lobby.GetLobby();	
+
+		// start game
 		while (!bGameWon)
-		{
-			switch (GameState)
-			{
-			case EGameState::Lobby:
+			StartRound();
 
-				InitLobby();
-				// make sure lobby is unchange unless game is over. otherwise will get bad memory alloc
-				Players = Lobby.GetLobby();
-				GameState = EGameState::Run;
-
-				break;
-			case EGameState::Run:
-
-				//only if there is a winner then Gamestate = summary
-				if (bGameWon)
-					GameState = EGameState::Summary;
-				else
-					StartRound();
-
-				break;
-			case EGameState::Summary:
-
-				bPlayAgain = AskPlayAgain();
-				GameState = EGameState::Lobby;
-
-				break;
-			default:
-
-				PrintIntro();
-				bGameWon = false;
-				GameState = EGameState::Lobby;
-
-				break;
-			}
-		}
-	} while (bPlayAgain);
+		// continue or nah
+		bPlayAgain = WantToPlayAgain();
+	}
+	while (bPlayAgain);
 }
 
 void FGame::StartRound()
 {
+	ERoundState RoundState = ERoundState::Round_Reset;
 	auto It = Players.begin();
 	while (It != Players.end())
 	{
@@ -65,7 +43,7 @@ void FGame::StartRound()
 		{
 		case ERoundState::Shuffle:
 			
-			WildCards.NewRound();
+			WildCards.NewDeck();
 			RoundState = ERoundState::Deal;
 
 			break;
@@ -83,23 +61,26 @@ void FGame::StartRound()
 
 			break;
 		case ERoundState::Score:
-			
-			if (Leader == nullptr || Leader->GetTotalScore() < CurrentPlayer.GetTotalScore())
+
+			if (Leader == nullptr ||
+				Leader->GetTotalScore() < CurrentPlayer.GetTotalScore())
 				Leader = &CurrentPlayer;
-
-			RoundState = (It == --Players.end()) ? ERoundState::Reset : ERoundState::Deal;
-			It++;
+			else if (Leader->GetTotalScore() == CurrentPlayer.GetTotalScore())
+			{
+				cout << "Uh-oh, looks like we have a tie.\n";
+				cout << "Dealing a new hand.\n";
+				RoundState = ERoundState::Deal;
+				break;
+			}
 			
-			break;
-		default:
-			
-			constexpr int MAX_ROUND = 5;
+			RoundState = (It == --Players.end()) ? ERoundState::Round_Reset : ERoundState::Deal;
 
-			if(Leader)
+			if (RoundState == ERoundState::Round_Reset)
 			{
 				system("CLS");
+				constexpr int MAX_ROUND = 3;
 				Leader->AddToRoundWon();
-				
+
 				if (Leader->GetRoundWon() >= MAX_ROUND)
 				{
 					cout << Leader->GetName() << " won the game!" << endl;
@@ -109,13 +90,20 @@ void FGame::StartRound()
 				{
 					cout << Leader->GetName() << " won this round!" << endl;
 					cout << "Total point: " << Leader->GetRoundWon() << endl;
+					cout << "Cards point: " << Leader->GetTotalScore() << endl;
 				}
-				
-				cout << "Please hit Enter to continue:";
+
+				cout << "Please press any key to continue:";
 				char Key;
 				Key = _getch();
 			}
-			Leader     = nullptr;
+			
+			It++;
+
+			break;
+		default:
+
+			Leader = nullptr;
 			RoundState = ERoundState::Shuffle;
 
 			break;
@@ -123,8 +111,9 @@ void FGame::StartRound()
 	}
 }
 
-bool FGame::AskPlayAgain()
+bool FGame::WantToPlayAgain()
 {
+	system("CLS");
 	FString PlayAgain = "Would you like to play again?";
 	char InputChar = GetUserInput<char>(PlayAgain);
 	return (tolower(InputChar) == 'y');
@@ -132,6 +121,7 @@ bool FGame::AskPlayAgain()
 
 void FGame::PrintIntro()
 {
+	system("CLS");
 	cout << "WELCOME TO WILD CARDS. \n\n";
 	cout << "Rules:\n";
 	cout << "Each round, players will receive 5 cards.\n";

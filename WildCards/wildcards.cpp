@@ -7,7 +7,7 @@ FWildCards::FWildCards()
 	MyDeck = FDeck();
 }
 
-void FWildCards::NewRound()
+void FWildCards::NewDeck()
 {
 	MyDeck.Reset();
 }
@@ -60,7 +60,8 @@ void FWildCards::PrintPlayerHand(FPlayer CurrentPlayer)
 {
 	system("CLS");
 
-	cout << CurrentPlayer.GetName() << " cards: \n\n";
+	cout << "Player: " << CurrentPlayer.GetName() << " Cards Point is ";
+	cout << CurrentPlayer.GetTotalScore() << endl << endl;
 
 
 	TMap<int, FCard> Hand = CurrentPlayer.GetCardsInHand();

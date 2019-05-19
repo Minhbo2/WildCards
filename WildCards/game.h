@@ -3,15 +3,7 @@
 #include "player.h"
 #include "lobby.h"
 #include "wildcards.h"
-
-
-enum class EGameState
-{
-	Init, // print intro
-	Lobby, // create lobby
-	Run, // run game loop 
-	Summary // print summary at the end of game and ask to play again
-};
+#include "gihf.h"
 
 enum class ERoundState
 {
@@ -19,7 +11,7 @@ enum class ERoundState
 	Deal,
 	Exchange,
 	Score,
-	Reset
+	Round_Reset
 };
 
 
@@ -29,12 +21,10 @@ class FGame
 public:
 	FGame();
 
-	void RunGame();
+	void Run();
 
 private:
 
-	EGameState GameState;
-	ERoundState RoundState;
 	FPlayer * Leader;
 	FLobby Lobby;
 	FWildCards WildCards;
@@ -44,5 +34,5 @@ private:
 	void PrintIntro();
 	void InitLobby();
 	void StartRound();
-	bool AskPlayAgain();
+	bool WantToPlayAgain();
 };
