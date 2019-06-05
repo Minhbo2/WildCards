@@ -7,9 +7,9 @@ using FString = std::string;
 
 using namespace std;
 
-//Global static helper function: get correct user input
+//Global helper function: get correct user input
 template<class T >
-static T GetUserInput(FString OutString)
+T GetUserInput(FString OutString)
 {
 	T UserInput;
 	bool bValid = false;
